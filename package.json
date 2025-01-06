@@ -1,0 +1,28 @@
+{
+  "name": "anand-mohatsav-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.21.0",
+    "express-session": "^1.17.3",
+    "form-data": "^4.0.1",
+    "mysql2": "^3.9.8",
+    "nodemailer": "^6.9.9",
+    "nodemailer-express-handlebars": "^6.1.2",
+    "sequelize": "^6.34.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
