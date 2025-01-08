@@ -6,6 +6,8 @@ import sequelize from './config/database.js';
 import ApiError from './utils/ApiError.js';
 import { ErrorHandler } from './middleware/Error.js';
 
+import bookingRoutes from './routes/booking.routes.js';
+
 (async () => {
   try {
     await sequelize.authenticate();
@@ -41,6 +43,8 @@ app.use(
 app.get('/', (_req, res) => {
   res.status(200).send({ data: 'API is up and running... 🚀', status: 200 });
 });
+
+app.use('/api/booking', bookingRoutes);
 
 // if any unknown endpoint is hit then the error is handelled
 app.use((_req, _res) => {
