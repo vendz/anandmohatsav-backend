@@ -158,7 +158,6 @@ export const BookGuestUtsav = async (req, res) => {
   const isBooked = await UtsavGuestBooking.findOne({
     where: {
       mobno: mobno,
-      packageid: packageid,
       guest_name: guest_name,
       guest_mobno: guest_mobno,
       status: { [Sequelize.Op.in]: [STATUS_PAYMENT_PENDING, STATUS_CONFIRMED] }
