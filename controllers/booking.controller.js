@@ -16,7 +16,7 @@ import {
 } from '../config/constants.js';
 
 export const ViewBookings = async (req, res) => {
-  const { mobno } = req.body;
+  const { mobno } = req.query;
 
   const utsav_bookings = await database.query(
     `
