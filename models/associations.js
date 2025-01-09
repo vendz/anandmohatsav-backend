@@ -2,6 +2,7 @@ import transactions from './transactions.model.js';
 import UtsavPackagesDb from './utsav_packages.model.model.js';
 import UtsavBooking from './utsav_boking.model.js';
 import UtsavGuestBooking from './utsav_guest_booking.model.js';
+import UserDb from './users.model.js';
 
 UtsavBooking.belongsTo(UtsavPackagesDb, {
   foreignKey: 'packageid',
@@ -26,4 +27,10 @@ UtsavPackagesDb.hasMany(UtsavGuestBooking, {
   onUpdate: 'CASCADE'
 });
 
-export { transactions, UtsavPackagesDb, UtsavBooking, UtsavGuestBooking };
+export {
+  transactions,
+  UtsavPackagesDb,
+  UtsavBooking,
+  UtsavGuestBooking,
+  UserDb
+};
