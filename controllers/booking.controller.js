@@ -276,7 +276,7 @@ WHERE t1.mobno = :mobno;
 };
 
 export const GenerateOrderId = async (req, res) => {
-  const { packageid } = req.body;
+  const { packageid } = req.query;
 
   const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
