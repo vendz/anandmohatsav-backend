@@ -20,7 +20,7 @@ import Razorpay from 'razorpay';
 export const FetchGreetings = async (req, res) => {
   const { mobno } = req.query;
   const greetings = await UserDb.findOne({
-    attributes: ['issuedto'],
+    attributes: ['issuedto', 'email'],
     where: {
       mobno: mobno
     }
