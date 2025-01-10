@@ -20,7 +20,7 @@ import Razorpay from 'razorpay';
 export const FetchGreetings = async (req, res) => {
   const { mobno } = req.query;
   const greetings = await UserDb.findOne({
-    attributes: ['issuedto', 'email'],
+    attributes: ['issuedto'],
     where: {
       mobno: mobno
     }
@@ -289,10 +289,10 @@ export const GenerateOrderId = async (req, res) => {
       id: packageid
     }
   });
-  const amount = package_amount.dataValues.amount * 1.005;
+  // const amount = package_amount.dataValues.amount * 1.005;
 
   const options = {
-    amount: amount * 100,
+    amount: package_amount.dataValues.amount * 100,
     currency: 'INR',
     receipt: uuidv4()
   };
