@@ -6,7 +6,8 @@ import {
   UtsavPackagesDb,
   UtsavBooking,
   transactions,
-  UtsavGuestBooking
+  UtsavGuestBooking,
+  UserDb
 } from '../models/associations.js';
 import {
   STATUS_CONFIRMED,
@@ -14,6 +15,18 @@ import {
   TYPE_GUEST_UTSAV,
   TYPE_UTSAV
 } from '../config/constants.js';
+
+export const FetchGreetings = async (req, res) => {
+  const { mobno } = req.query;
+  const greetings = await UserDb.findOne({
+    attributes: ['issuedto'],
+    where: {
+      mobno: mobno
+    }
+  });
+
+  res.status(200).json({ data: greetings });
+};
 
 export const ViewBookings = async (req, res) => {
   const { mobno } = req.query;
@@ -203,5 +216,60 @@ export const BookGuestUtsav = async (req, res) => {
   return res.status(200).send({
     message: 'Booking successful',
     data: { transaction_id: transactionID }
+  });
+};
+
+export const GetBookingReport = async (req, res) => {
+  const { mobno } = req.query;
+
+  const utsav_bookings = await database.query(
+    `
+    SELECT 
+t1.bookingid,
+t3.name AS package,
+t3.start_date,
+t3.end_date,
+t4.issuedto AS name,
+t1.mobno,
+t1.travel_mode,
+t1.car_number_plate,
+t1.status AS booking_status,
+t2.amount,
+t2.status AS transaction_status
+from utsav_booking t1
+JOIN transactions t2 ON t1.bookingid = t2.bookingid
+JOIN utsav_packages_db t3 ON t1.packageid = t3.id
+JOIN users t4 ON t1.mobno = t4.mobno
+WHERE t1.mobno = :mobno
+
+UNION
+
+SELECT 
+t1.bookingid,
+t3.name AS package,
+t3.start_date,
+t3.end_date,
+t1.guest_name AS name,
+t1.guest_mobno AS mobno,
+t1.travel_mode,
+t1.car_number_plate,
+t1.status AS booking_status,
+t2.amount,
+t2.status AS transaction_status
+from utsav_guest_booking t1
+JOIN transactions t2 ON t1.bookingid = t2.bookingid
+JOIN utsav_packages_db t3 ON t1.packageid = t3.id
+WHERE t1.mobno = :mobno;
+    `,
+    {
+      replacements: { mobno: mobno },
+      type: database.QueryTypes.SELECT,
+      raw: true
+    }
+  );
+
+  return res.status(200).send({
+    message: 'Bookings fetched successfully',
+    data: utsav_bookings
   });
 };
