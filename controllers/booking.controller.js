@@ -289,10 +289,10 @@ export const GenerateOrderId = async (req, res) => {
       id: packageid
     }
   });
-  // const amount = package_amount.dataValues.amount * 1.005;
+  const amount = package_amount.dataValues.amount * 100;
 
   const options = {
-    amount: package_amount.dataValues.amount,
+    amount: amount,
     currency: 'INR',
     receipt: uuidv4()
   };
