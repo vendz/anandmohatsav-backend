@@ -15,6 +15,7 @@ import {
   TYPE_GUEST_UTSAV,
   TYPE_UTSAV
 } from '../config/constants.js';
+import Razorpay from 'razorpay';
 
 export const FetchGreetings = async (req, res) => {
   const { mobno } = req.query;
@@ -272,4 +273,30 @@ WHERE t1.mobno = :mobno;
     message: 'Bookings fetched successfully',
     data: utsav_bookings
   });
+};
+
+export const GenerateOrderId = async (req, res) => {
+  const { packageid } = req.body;
+
+  const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+  });
+
+  const package_amount = await UtsavPackagesDb.findOne({
+    attributes: ['amount'],
+    where: {
+      id: packageid
+    }
+  });
+  const amount = package_amount.dataValues.amount * 1.005;
+
+  const options = {
+    amount: amount * 100,
+    currency: 'INR',
+    receipt: uuidv4()
+  };
+
+  const order = await razorpay.orders.create(options);
+  return res.status(200).json({ data: order });
 };
